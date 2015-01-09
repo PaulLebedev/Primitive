@@ -1,0 +1,13 @@
+{
+  "name": "Socket.IO-multi-room-simple-chat",
+  "version": "0.0.1",
+  "description": "A simple multi-room chat for socket.io",
+  "main": "index.js",
+  "author": "Paul Lebedev",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "express": "3.19.0",    
+    "socket.io": "1.2.1"
+  }
+}
