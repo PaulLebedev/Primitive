@@ -19,5 +19,6 @@ a port by supplying the `PORT` env variable.
 on website load.
 - Users can type chat messages to the chat room.
 - Users can switch in other chat room.
+- Users get chat history when connect to new chat room.
 - A notification is sent to all users when a user joins or leaves
 the chatroom.
