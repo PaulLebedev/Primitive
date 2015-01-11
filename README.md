@@ -24,5 +24,5 @@ the chatroom.
 ## New Features
 
 - Users can switch in other chat room.
-- Users get chat history when connect to new chat room.
+- Users get chat history when joining to new chat room.
 
