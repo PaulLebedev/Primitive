@@ -21,14 +21,12 @@
             </li>
         </ul>
         <div style="position: absolute; top: 0; right: 0; color: red; text-align: right; padding: 15px; background-color: wheat">
-            <span id='current_room_name'>'/default'</span> <label for="room">is current room</label><br>
-            <input type="text" id="room" placeholder="new room" value=""><br>
-            <button id="change_room">change room</button>
-        </div>
-        <div style="position: absolute; top: 0; right: 0; color: red; text-align: right; padding: 15px; background-color: wheat">
-            <span id='current_room_name'>'/default'</span> <label for="room">is current room</label><br>
-            <input type="text" id="room" placeholder="new room" value=""><br>
-            <button id="change_room">change room</button>
+            <label for="room_switcher"><b><span id='room_display'></span></b> is current room</label><br>
+            <select size="3" name="room_switcher" id="room_switcher">
+                <option value="/default" selected>default</option>
+                <option value="/911">911</option>
+                <option value="/buckingham_palace">Buckingham palace</option>
+            </select>
         </div>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>

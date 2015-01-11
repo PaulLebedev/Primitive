@@ -12,7 +12,9 @@ $(function () {
     var $usernameInput = $('.usernameInput'); // Input for username
     var $messages = $('.messages'); // Messages area
     var $inputMessage = $('.inputMessage'); // Input message input box
-    var room = $('#room').val(); // Input message input box
+    //var room = $('#room').val();
+    var $roomDisplay = $('#room_display');
+    var $roomSwitcher = $('#room_switcher');
 
     var $loginPage = $('.login.page'); // The login page
     var $chatPage = $('.chat.page'); // The chatroom page
@@ -60,10 +62,10 @@ $(function () {
         // if there is a non-empty message and a socket connection
         if (message && connected) {
             $inputMessage.val('');
-            addChatMessage({
+            /*addChatMessage({
                 username: username,
                 message: message
-            });
+            });*/
             // tell server to execute 'new message' and send along one parameter
             socket.emit('new message', message);
         }
@@ -224,9 +226,8 @@ $(function () {
         $inputMessage.focus();
     });
 
-    $('#change_room').click(function () {
-        alert('clicked');
-        socket.emit('new room', 'some_room_message');
+    $roomSwitcher.change(function () {
+        socket.emit('new room', $roomSwitcher.val());
     });
 
     // Socket events
@@ -245,6 +246,11 @@ $(function () {
     // Whenever the server emits 'new message', update the chat body
     socket.on('new message', function (data) {
         addChatMessage(data);
+    });
+    
+    // Whenever the server emits 'update current room', update the #room_display
+    socket.on('update current room', function (data) {
+        $roomDisplay.empty().append(data);
     });
 
     // Whenever the server emits 'user joined', log it in the chat body
