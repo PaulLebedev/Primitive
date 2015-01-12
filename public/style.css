@@ -111,9 +111,11 @@ ul {
 
 /* Messages */
 
-.chatArea {
+.chatArea, .logArea {
   height: 100%;
+  width: 50%;
   padding-bottom: 60px;
+  float: left;
 }
 
 .messages {
@@ -147,4 +149,20 @@ ul {
   position: absolute;
   right: 0;
   width: 100%;
+}
+
+/*room section*/
+
+.room_section {
+     position: absolute;
+     top: 0;
+     right: 0;
+     color: red;
+     text-align: right;
+     padding: 15px;
+     background-color: wheat
+}
+
+.room_section form input, .room_section form select {
+    width: 200px;
 }

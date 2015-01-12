@@ -4,9 +4,18 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+var redis = require('redis');
+var client = redis.createClient();
+
+
+
 
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
+});
+
+client.on("error", function (err) {
+    console.log("Error " + err);
 });
 
 // Routing
@@ -20,16 +29,44 @@ var numUsers = 0;
 
 io.on('connection', function (socket) {
     var addedUser = false;
-    socket.current_room = '/default';
-    
-    socket.emit('update current room', socket.current_room);
-    
-    socket.join(socket.current_room);
+    var isRoomSet = false;
+//    var redisReplay = '';
+
+    /*function getRedisReplay(key) {
+        client.get(key, function (err, reply) {
+            if (err)
+                console.log("Error " + err);
+            console.log(reply);
+            socket.replay = "Replay: " + reply;
+            console.log(socket.replay);
+        });
+    }*/
+
+    /*function statusMsg() {
+     client.get("socket.IO_key", function (err, reply) {
+     if (err)
+     console.log("Error " + err);
+     console.log(reply);
+     socket.replay = "Replay: " + reply;
+     console.log(socket.replay);
+     io.to(socket.room).emit('new message', {
+     username: 'system_' + socket.room,
+     message: socket.username + ' is joined.' + socket.replay
+     });
+     });
+     }*/
+
+    function statusMsg() {
+        io.to(socket.room).emit('new message', {
+            username: 'system_' + socket.room,
+            message: socket.username + ' is joined.'
+        });
+    }
 
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function (data) {
         // we tell the client to execute 'new message'
-        io.to(socket.current_room).emit('new message', {
+        io.to(socket.room).emit('new message', {
             username: socket.username,
             message: data
         });
@@ -37,14 +74,17 @@ io.on('connection', function (socket) {
 
     // when the client emits 'new room', this listens and executes
     socket.on('new room', function (room) {
-        socket.leave(socket.current_room);
-        socket.current_room = room;
-        socket.emit('update current room', socket.current_room);
+        if (isRoomSet) {
+            socket.leave(socket.room);
+        } else {
+            isRoomSet = true;
+        }
+        // we store the room in the socket session for this client
+        socket.room = room;
         socket.join(room);
-        io.to(room).emit('new message', {
-            username: 'Lucy',
-            message: 'Hi, ' + socket.username + '! Welcom to ' + room + ' room!'
-        });
+        socket.emit('update current room', room);
+        statusMsg();
+
     });
 
     // when the client emits 'add user', this listens and executes
@@ -60,7 +100,7 @@ io.on('connection', function (socket) {
             numUsers: numUsers
         });
         // echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user joined', {
+        io.to(socket.room).emit('user joined', {
             username: socket.username,
             numUsers: numUsers
         });
@@ -68,14 +108,14 @@ io.on('connection', function (socket) {
 
     // when the client emits 'typing', we broadcast it to others
     socket.on('typing', function () {
-        socket.broadcast.emit('typing', {
+        io.to(socket.room).emit('typing', {
             username: socket.username
         });
     });
 
     // when the client emits 'stop typing', we broadcast it to others
     socket.on('stop typing', function () {
-        socket.broadcast.emit('stop typing', {
+        io.to(socket.room).emit('stop typing', {
             username: socket.username
         });
     });
@@ -88,7 +128,7 @@ io.on('connection', function (socket) {
             --numUsers;
 
             // echo globally that this client has left
-            socket.broadcast.emit('user left', {
+            io.to(socket.room).emit('user left', {
                 username: socket.username,
                 numUsers: numUsers
             });

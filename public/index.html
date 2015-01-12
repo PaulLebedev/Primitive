@@ -11,22 +11,29 @@
                 <div class="chatArea">
                     <ul class="messages"></ul>
                 </div>
-                <input class="inputMessage" placeholder="Type here..."/>
+                <div class="logArea">
+                    <ul class="messages"></ul>
+                </div>
+                <input class="inputMessage" placeholder="Type here..." autocomplete="off"/>
             </li>
             <li class="login page">
                 <div class="form">
                     <h3 class="title">What's your nickname?</h3>
-                    <input class="usernameInput" type="text" maxlength="14" />
+                    <input class="usernameInput" type="text" maxlength="14" autocomplete="off"/>
                 </div>
             </li>
         </ul>
-        <div style="position: absolute; top: 0; right: 0; color: red; text-align: right; padding: 15px; background-color: wheat">
-            <label for="room_switcher"><b><span id='room_display'></span></b> is current room</label><br>
-            <select size="3" name="room_switcher" id="room_switcher">
-                <option value="/default" selected>default</option>
-                <option value="/911">911</option>
-                <option value="/buckingham_palace">Buckingham palace</option>
+        <div class="room_section">
+            <form autocomplete="off">
+            <label for="room_display">Current room:</label><br>
+            <input id="room_display" disabled value="911"/><br>
+            <label for="room_switcher">Known rooms:</label><br>
+            <select size="3" name="room_switcher" id="room_switcher" disabled>
+                <option value="default">default</option>
+                <option value="911">911</option>
+                <option value="buckingham_palace">Buckingham palace</option>
             </select>
+            </form>
         </div>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>

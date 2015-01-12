@@ -51,7 +51,14 @@ $(function () {
 
             // Tell the server your username
             socket.emit('add user', username);
+            switchToRoomByDefault();
         }
+    }
+    
+    function switchToRoomByDefault() {
+        $('select#room_switcher option[value="'+$roomDisplay.val()+'"]').attr('selected','selected');
+        socket.emit('new room', $roomSwitcher.val());
+        $roomSwitcher.removeAttr('disabled');        
     }
 
     // Sends a chat message
@@ -250,7 +257,8 @@ $(function () {
     
     // Whenever the server emits 'update current room', update the #room_display
     socket.on('update current room', function (data) {
-        $roomDisplay.empty().append(data);
+        $roomDisplay.val(data);
+        $('.chatArea ul').empty();
     });
 
     // Whenever the server emits 'user joined', log it in the chat body
