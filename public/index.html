@@ -2,37 +2,36 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Socket.IO Chat Example</title>
+        <title>Primitive</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <ul class="pages">
-            <li class="chat page">
-                <div class="chatArea">
-                    <ul class="messages"></ul>
-                </div>
-                <div class="logArea">
-                    <ul class="messages"></ul>
-                </div>
-                <input class="inputMessage" placeholder="Type here..." autocomplete="off"/>
-            </li>
-            <li class="login page">
-                <div class="form">
-                    <h3 class="title">What's your nickname?</h3>
-                    <input class="usernameInput" type="text" maxlength="14" autocomplete="off"/>
-                </div>
-            </li>
-        </ul>
+        <div id="log_area">
+            <ul class="messages"></ul>
+        </div>
+        <div id="chat_area">
+            <ul class="messages"></ul>
+        </div>
+        <input id="input_message" placeholder="Type here..." autocomplete="off"/>
         <div class="room_section">
             <form autocomplete="off">
-            <label for="room_display">Current room:</label><br>
-            <input id="room_display" disabled value="911"/><br>
-            <label for="room_switcher">Known rooms:</label><br>
-            <select size="3" name="room_switcher" id="room_switcher" disabled>
-                <option value="default">default</option>
-                <option value="911">911</option>
-                <option value="buckingham_palace">Buckingham palace</option>
-            </select>
+                <input type="hidden" id="start_room" value="921"/>
+                
+                <input type="hidden" id="user_id" value="999"/>
+                
+                <input type="hidden" id="user_name" value="Jhon"/>
+                
+                <input type="hidden" id="socket_id" value=""/>
+                
+                <label for="room_display">Current room:</label><br>
+                <input type="text" id="room_display" disabled value=""/><br>
+                
+                <label for="room_switcher">Known rooms:</label><br>
+                <select size="3" name="room_switcher" id="room_switcher" disabled>
+                    <option value="default">default</option>
+                    <option value="911">911</option>
+                    <option value="buckingham_palace">Buckingham palace</option>
+                </select>
             </form>
         </div>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

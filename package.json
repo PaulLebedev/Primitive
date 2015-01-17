@@ -1,14 +1,14 @@
 {
-  "name": "Socket.IO-multi-room-simple-chat",
+  "name": "Primitive",
   "version": "0.0.1",
-  "description": "A simple multi-room chat for socket.io",
+  "description": "oversimplification chat with support multi-rooms and the history of chat based nodejs and redis",
   "main": "index.js",
   "author": "Paul Lebedev",
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "express": "3.19.0",    
-    "socket.io": "1.2.1",
-    "redis": "0.12.1"
+    "express":"4.x.x",
+    "socket.io": "1.2.x",
+    "redis": "0.12.x"
   }
 }

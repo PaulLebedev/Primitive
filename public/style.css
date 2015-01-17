@@ -1,168 +1,130 @@
 /* Fix user-agent */
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
 }
 
 html, input {
-  font-family:
-    "HelveticaNeue-Light",
-    "Helvetica Neue Light",
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    "Lucida Grande",
-    sans-serif;
+    font-family:
+        "HelveticaNeue-Light",
+        "Helvetica Neue Light",
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        "Lucida Grande",
+        sans-serif;
 }
 
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 ul {
-  list-style: none;
-  word-wrap: break-word;
-}
-
-/* Pages */
-
-.pages {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-.page {
-  height: 100%;
-  position: absolute;
-  width: 100%;
-}
-
-/* Login Page */
-
-.login.page {
-  background-color: #000;
-}
-
-.login.page .form {
-  height: 100px;
-  margin-top: -100px;
-  position: absolute;
-
-  text-align: center;
-  top: 50%;
-  width: 100%;
-}
-
-.login.page .form .usernameInput {
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid #fff;
-  outline: none;
-  padding-bottom: 15px;
-  text-align: center;
-  width: 400px;
-}
-
-.login.page .title {
-  font-size: 200%;
-}
-
-.login.page .usernameInput {
-  font-size: 200%;
-  letter-spacing: 3px;
-}
-
-.login.page .title, .login.page .usernameInput {
-  color: #fff;
-  font-weight: 100;
-}
-
-/* Chat page */
-
-.chat.page {
-  display: none;
+    list-style: none;
+    word-wrap: break-word;
 }
 
 /* Font */
 
 .messages {
-  font-size: 150%;
+    font-size: 80%;
 }
 
-.inputMessage {
-  font-size: 100%;
+#input_message {
+    font-size: 100%;
 }
 
 .log {
-  color: gray;
-  font-size: 70%;
-  margin: 5px;
-  text-align: center;
+    color: gray;
+    font-size: 70%;
+    margin: 5px;
+    text-align: center;
 }
 
 /* Messages */
 
-.chatArea, .logArea {
-  height: 100%;
-  width: 50%;
-  padding-bottom: 60px;
-  float: left;
+#chat_area, #log_area {
+    height: 100%;
+    width: 50%;
+    padding-bottom: 60px;
+    float: left;
 }
 
 .messages {
-  height: 100%;
-  margin: 0;
-  overflow-y: scroll;
-  padding: 10px 20px 10px 20px;
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    padding: 10px 20px 10px 20px;
 }
 
 .message.typing .messageBody {
-  color: gray;
+    color: gray;
 }
 
 .username {
-  float: left;
-  font-weight: 700;
-  overflow: hidden;
-  padding-right: 15px;
-  text-align: right;
+    float: left;
+    font-weight: 700;
+    overflow: hidden;
+    padding-right: 15px;
+    text-align: right;
 }
 
 /* Input */
 
-.inputMessage {
-  border: 10px solid #000;
-  bottom: 0;
-  height: 60px;
-  left: 0;
-  outline: none;
-  padding-left: 10px;
-  position: absolute;
-  right: 0;
-  width: 100%;
+#input_message {
+    border: 1px solid gray;
+    bottom: 0;
+    height: 60px;
+    left: 0;
+    outline: none;
+    padding-left: 10px;
+    position: absolute;
+    right: 0;
+    width: 100%;
 }
 
 /*room section*/
 
 .room_section {
-     position: absolute;
-     top: 0;
-     right: 0;
-     color: red;
-     text-align: right;
-     padding: 15px;
-     background-color: wheat
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    color: red;
+    text-align: right;
+    padding: 15px;
+    background-color: wheat
 }
 
 .room_section form input, .room_section form select {
     width: 200px;
+}
+
+.messages li.my {
+    background-color: turquoise;
+    text-align: right;
+}
+
+.messages li.not_my {
+    background-color: bisque;
+    text-align: left;
+}
+
+.messages li.system {
+    background-color: aquamarine;
+    text-align: center;
+}
+
+.messages li {
+    margin: 2px;
+}
+
+.messages li span {
+    color: white;
 }

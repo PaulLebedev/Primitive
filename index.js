@@ -1,137 +1,89 @@
+var conf = {
+    port: 3000,
+    storage_deep: 5,
+    member_lenth: 3
+};
+
 // Setup basic express server
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 3000;
 var redis = require('redis');
 var client = redis.createClient();
 
 
-
-
-server.listen(port, function () {
-    console.log('Server listening at port %d', port);
+server.listen(conf.port, function () {
+    console.log('Server listening at port %d', conf.port);
 });
 
 client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-// Routing
+// ***************************************************************************
+// Express routes
+// ***************************************************************************
+
 app.use(express.static(__dirname + '/public'));
 
-// Chatroom
-
-// usernames which are currently connected to the chat
-var usernames = {};
-var numUsers = 0;
+// ***************************************************************************
+// Socket.io events
+// ***************************************************************************
 
 io.on('connection', function (socket) {
-    var addedUser = false;
+
     var isRoomSet = false;
-//    var redisReplay = '';
 
-    /*function getRedisReplay(key) {
-        client.get(key, function (err, reply) {
-            if (err)
-                console.log("Error " + err);
-            console.log(reply);
-            socket.replay = "Replay: " + reply;
-            console.log(socket.replay);
+    socket.emit('get user id');
+
+    socket.on('add user', function (user_id) {
+        socket.user_id = user_id;
+        socket.emit('user added', socket.id);
+    });
+
+    socket.on('switch room', function (room) {
+        checkRoomSet();
+        socket.room = room;
+        socket.join(socket.room);
+        socket.emit('room changed', socket.room);
+        client.lrange(socket.room, 0, conf.member_lenth - 1, function (err, results) {
+            err ? errLog(err) : socket.emit('load room history', results);
+            emitNewMsg({
+                socket: socket.id,
+                username: 'system',
+                message: 'user_id: "' + socket.user_id + '", on socket_id: "' + socket.id + '" is joined room "' + socket.room + '".'
+            });
         });
-    }*/
 
-    /*function statusMsg() {
-     client.get("socket.IO_key", function (err, reply) {
-     if (err)
-     console.log("Error " + err);
-     console.log(reply);
-     socket.replay = "Replay: " + reply;
-     console.log(socket.replay);
-     io.to(socket.room).emit('new message', {
-     username: 'system_' + socket.room,
-     message: socket.username + ' is joined.' + socket.replay
-     });
-     });
-     }*/
+    });
 
-    function statusMsg() {
-        io.to(socket.room).emit('new message', {
-            username: 'system_' + socket.room,
-            message: socket.username + ' is joined.'
-        });
-    }
-
-    // when the client emits 'new message', this listens and executes
-    socket.on('new message', function (data) {
-        // we tell the client to execute 'new message'
-        io.to(socket.room).emit('new message', {
-            username: socket.username,
-            message: data
+    socket.on('new message', function (msg) {
+        emitNewMsg({
+            socket: socket.id,
+            username: socket.user_id,
+            message: msg
         });
     });
 
-    // when the client emits 'new room', this listens and executes
-    socket.on('new room', function (room) {
+
+    function emitNewMsg(data) {
+        io.to(socket.room).emit('new message', data);
+        client.lpush(socket.room, JSON.stringify(data));
+        client.ltrim(socket.room, 0, conf.storage_deep - 1);
+    }
+
+    function checkRoomSet() {
         if (isRoomSet) {
             socket.leave(socket.room);
         } else {
             isRoomSet = true;
         }
-        // we store the room in the socket session for this client
-        socket.room = room;
-        socket.join(room);
-        socket.emit('update current room', room);
-        statusMsg();
+    }
 
-    });
+    function errLog(err) {
+        console.log(err);
+    }
 
-    // when the client emits 'add user', this listens and executes
-    socket.on('add user', function (username) {
-        // we store the username in the socket session for this client
-        socket.username = username;
-
-        // add the client's username to the global list
-        usernames[username] = username;
-        ++numUsers;
-        addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
-        });
-        // echo globally (all clients) that a person has connected
-        io.to(socket.room).emit('user joined', {
-            username: socket.username,
-            numUsers: numUsers
-        });
-    });
-
-    // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', function () {
-        io.to(socket.room).emit('typing', {
-            username: socket.username
-        });
-    });
-
-    // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop typing', function () {
-        io.to(socket.room).emit('stop typing', {
-            username: socket.username
-        });
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', function () {
-        // remove the username from global usernames list
-        if (addedUser) {
-            delete usernames[socket.username];
-            --numUsers;
-
-            // echo globally that this client has left
-            io.to(socket.room).emit('user left', {
-                username: socket.username,
-                numUsers: numUsers
-            });
-        }
-    });
 });
+

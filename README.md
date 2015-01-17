@@ -1,5 +1,4 @@
-# Socket.IO-multi-room-simple-chat
-A simple multi-room chat for socket.io
+"Primitive" is oversimplification chat with support multi-rooms and the history of chat based nodejs and redis.
 
 ## How to use
 
@@ -15,14 +14,10 @@ a port by supplying the `PORT` env variable.
 
 ## Basic Features
 
-- Multiple users can join default chat room by each entering a unique username
-on website load.
+- Multiple users can join default chat room.
 - Users can type chat messages to the chat room.
-- A notification is sent to all users when a user joins or leaves
-the chatroom.
 
 ## New Features
 
 - Users can switch in other chat room.
 - Users get chat history when joining to new chat room.
-
