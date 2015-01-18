@@ -1,5 +1,7 @@
 "Primitive" is oversimplification chat with support multi-rooms and the history of chat based nodejs and redis.
 
+demo: http://chat.paullebedev.ru
+
 ## How to use
 
 In application root:
@@ -9,7 +11,7 @@ $ npm install
 $ nodejs .
 ```
 
-And point your browser to `http://localhost:3000`. Optionally, specify
+And point your browser to `http://localhost:6001`. Optionally, specify
 a port by supplying the `PORT` env variable.
 
 ## Basic Features

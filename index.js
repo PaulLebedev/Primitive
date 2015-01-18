@@ -1,5 +1,5 @@
 var conf = {
-    port: 3000,
+    port: 6001,
     storage_deep: 5,
     member_lenth: 3
 };
