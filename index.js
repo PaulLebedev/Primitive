@@ -34,7 +34,7 @@ app.use(express.static(__dirname + '/public'));
 io.on('connection', function (socket) {
 
     var isRoomSet = false;
-
+    client.select(1);
     socket.emit('get user id');
 
     socket.on('add user', function (user_id) {
